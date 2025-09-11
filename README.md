@@ -15,7 +15,7 @@ It's easy as well.
 - Change ```Bible-CLI/bible.conf``` by replacing the value of the translation and the language **OR** do the same using ```Bible-CLI/ch``` (which is a bash script): ```./ch <language> <translation>``` (the file also **must** be in the *.bbl* format)
 
 # Licence?
-There is no license, and all that rubbish, just because the Bible doesn't need it. You can modify the code however you can and however you want.
+There is no licence, and all that rubbish, just because the Bible doesn't need it. You can modify the code however you can and however you want.
 
 # Sources
 The primary source is OpenBible. [Check out the Bible's translations](https://openbible.com/textfiles).
