@@ -15,3 +15,6 @@ It's easy as well.
 
 # License?
 There is no license, and all that rubbish, just because the Bible doesn't need it. You can modify the code however you can and however you want.
+
+# Sources
+The primary source is OpenBible. [Check out the Bible's translations](https://openbible.com/textfiles).
