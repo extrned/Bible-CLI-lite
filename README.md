@@ -19,3 +19,7 @@ There is no license, and all that rubbish, just because the Bible doesn't need i
 
 # Sources
 The primary source is OpenBible. [Check out the Bible's translations](https://openbible.com/textfiles).
+
+# Thanks them
+* [Terry Davis for the motivation](https://www.youtube.com/watch?v=oH41gGBVpkE)
+<img width="320" height="180" alt="17575743962221808125180978607495" src="https://github.com/user-attachments/assets/51c17f5d-0fad-48e1-b2a4-298818731757" /> <br />
