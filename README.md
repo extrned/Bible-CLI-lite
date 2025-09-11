@@ -9,8 +9,8 @@ Simple as that, mate. Use ```make``` to build the project and then run the execu
 # Well, how can I download new translations for the Bible?
 It's easy as well.
 - Download any text file with the plain text of the Bible (NO JSON/XML/ET CETERA FORMATS).
-- Move this file into Bible-CLI/Translations/
-- Change Bible-CLI/bible.conf by replacing the value of the translation with your file's name (the file also must be in .txt)
+- Move this file into ```Bible-CLI/Translations/```
+- Change ```Bible-CLI/bible.conf``` by replacing the value of the translation with your file's name **OR** do the same using ```Bible-CLI/ch``` (which is a bash script): ```./ch <translation>``` (the file also **must** be in .txt)
 
 # License?
 There is no license, and all that rubbish, just because the Bible doesn't need it. You can modify the code however you can and however you want.
