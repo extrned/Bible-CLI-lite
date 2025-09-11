@@ -4,15 +4,17 @@
 - Large massive functionality considering it's in a terminal
 - To worship God
 
-# So, how can I make it?
-Simple as that, mate. Use ```make``` to build the project and then run the executable.
-
-# Well, how can I download new translations for the Bible?
-It's easy as well.
+# FAQ
+### — So, how can I make it?
+**Answer:** Simple as that, mate. Use ```make``` to build the project and then run the executable.
+### — Well, how can I download new translations for the Bible?
+**Answer:** It's easy as well.
 - Download any text file with the plain text of the Bible (NO JSON/XML/ET CETERA FORMATS).
 - Rename it considering the file format ```<LANGUAGE>_<TRANSLATION>.bbl```.
-- Move this file into ```Bible-CLI/Translations/```
-- Change ```Bible-CLI/bible.conf``` by replacing the value of the translation and the language **OR** do the same using ```Bible-CLI/ch``` (which is a bash script): ```./ch <language> <translation>``` (the file also **must** be in the *.bbl* format)
+- Move this file into ```Bible-CLI-lite/Translations/```
+- Change ```Bible-CLI-lite/bible.conf``` by replacing the value of the translation and the language **OR** do the same using ```Bible-CLI-lite/ch``` (which is a bash script): ```./ch <language> <translation>``` (the file also **must** be in the *.bbl* format)
+### — What if I've got a non-OpenBible format?
+**Answer:** you *should* write your own parser. How to do that? Go right to ```Bible-CLI-lite/bible_cli/Sources/``` and recreate a file named ```parser.c``` from the scratch. You have to use the same function names that is declared in the ```parser.h``` file. Now it's fine. You can use the program with your format.
 
 # Licence?
 There is no licence, and all that rubbish, just because the Bible doesn't need it. You can modify the code however you can and however you want.
