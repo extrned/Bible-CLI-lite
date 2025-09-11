@@ -1,3 +1,4 @@
+**!!! FIRST BIBLE NIV VERSION IN PLAIN TEXT RIGHT IN THIS REPO !!!**
 # What was this supposed to be for
 - In memory of King Terry
 - Large massive functionality considering it's in a terminal
