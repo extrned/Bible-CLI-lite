@@ -14,7 +14,7 @@ It's easy as well.
 - Move this file into ```Bible-CLI/Translations/```
 - Change ```Bible-CLI/bible.conf``` by replacing the value of the translation and the language **OR** do the same using ```Bible-CLI/ch``` (which is a bash script): ```./ch <language> <translation>``` (the file also **must** be in the *.bbl* format)
 
-# License?
+# Licence?
 There is no license, and all that rubbish, just because the Bible doesn't need it. You can modify the code however you can and however you want.
 
 # Sources
