@@ -1,6 +1,4 @@
 #include "lang_parser.h"
-#include "logger.h"
-#include "tool.h"
 
 int initLanguagePack(LanguagePack *lp, char *langName) {
     if (lp == NULL) {

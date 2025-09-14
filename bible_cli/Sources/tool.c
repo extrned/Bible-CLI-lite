@@ -1,7 +1,4 @@
-#include "config_manager.h"
-#include "lang_parser.h"
 #include "tool.h"
-#include "logger.h"
 
 int main(void) {
     ConfigParams pars = {0};

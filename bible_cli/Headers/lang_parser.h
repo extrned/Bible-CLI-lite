@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "logger.h"
+#include "tool.h"
+#include "utils.h"
 
 typedef struct {
     char *langCode;
