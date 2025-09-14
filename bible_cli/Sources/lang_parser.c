@@ -1,4 +1,6 @@
 #include "lang_parser.h"
+#define MAX_LINE_LENGTH 1024
+#define MAX_LANG_LENGTH 50
 
 int initLanguagePack(LanguagePack *lp, char *langName) {
     if (lp == NULL) {
@@ -18,12 +20,12 @@ int processLanguagePack(LanguagePack *lp, const char *lpPath) {
     if (strlen(lpPath) == 0) {
         return makeError("LanguagePack path is empty");
     }
-    char *line = (char *)malloc(1024 * sizeof(char));
+    char *line = (char *)malloc(MAX_LINE_LENGTH * sizeof(char));
     if (line == NULL) {
         return makeError("Failed to allocate memory for line.");
     }
 
-    char *lang = (char *)malloc(50 * sizeof(char));
+    char *lang = (char *)malloc(MAX_LANG_LENGTH * sizeof(char));
     if (lang == NULL) {
         makeErrorAndFreeString("Failed to allocate memory for lang.", 1, line);
     }
@@ -32,7 +34,7 @@ int processLanguagePack(LanguagePack *lp, const char *lpPath) {
     if (f == NULL) {
         return makeErrorAndFreeString("Failed to open a language pack", 2, line, lang);
     }
-    while (fgets(line, sizeof(line), f) != NULL) {
+    while (fgets(line, MAX_LINE_LENGTH, f) != NULL) {
         line[strcspn(line, "\n")] = '\0';
         if (strlen(line) == 0 || line[0] == '*') continue;
         char *oBracket = strchr(line, '[');
@@ -42,7 +44,18 @@ int processLanguagePack(LanguagePack *lp, const char *lpPath) {
                 if (DEBUG_MODE)
                     makeLog("LanguagePack: Running through %s", line);
                 int len = cBracket - (oBracket + 1);
-                strncpy(lang, oBracket + 1, len);
+                if (len >= MAX_LANG_LENGTH) {
+                    fclose(f);
+                    return makeErrorAndFreeString("Language code is too long.", 2, line, lang);
+                }
+                char *trimmed = trim(oBracket + 1);
+                size_t trimmedLen = strlen(trimmed);
+                if (trimmedLen >= MAX_LANG_LENGTH) {
+                    fclose(f);
+                    return makeErrorAndFreeString("Trimmed language code is too long.", 2, line, lang);
+                }
+                if (trimmedLen > len) trimmedLen = len;
+                strncpy(lang, trimmed, len);
                 lang[len] = '\0';
                 if (DEBUG_MODE)
                     makeLog("Now lang is %s", lang);
@@ -52,10 +65,12 @@ int processLanguagePack(LanguagePack *lp, const char *lpPath) {
     free(line);
     
     if (strcmp(lang, lp->langCode) != 0) {
+        fclose(f);
         makeWarning("'%s' isn't supported.", lp->langCode);
         return makeErrorAndFreeString("The language pack does not contain your language. Critical error.", 1, lang);
     }
     free(lang);
+    fclose(f);
     return 1;
 }
 
