@@ -1,3 +1,4 @@
 #pragma once
 
-#define BUFFER_SIZE 128
+#define PATH_SIZE 512
+#define DEBUG_MODE 1 // FOR LOGGING. TURN OFF IF IT ISN'T NEEDED

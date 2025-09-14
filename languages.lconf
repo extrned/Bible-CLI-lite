@@ -1,0 +1,22 @@
+* Was written for Bible-CLI
+* Keep praising God and reading the Bible with this one
+* The .lconf (language config) format: [<LANGUAGE>] <NEWLINE> <place-name> <SPACE> <value>
+[en]
+main-title-section The Bible CLI
+main-button-start Start from the beginning
+main-button-continue Continue reading
+main-button-settings Open Settings
+main-button-exit Close the program
+reader-title-book Book
+reader-title-chapter Chapter
+reader-title-verse Verse
+
+[ru]
+main-title-section Консольная Библия
+main-button-start Читать с начала
+main-button-continue Продолжить чтение
+main-button-settings Открыть Настройки
+main-button-exit Выйти
+reader-title-book Книга
+reader-title-chapter Глава
+reader-title-verse Стих

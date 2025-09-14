@@ -1,0 +1,4 @@
+// THE BIBLE PARSER
+// MADE ONLY FOR OPENBIBLE VERSIONS
+
+#include "parser.h"

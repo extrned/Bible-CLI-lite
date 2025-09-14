@@ -4,17 +4,27 @@
 - Large massive functionality considering it's in a terminal
 - To worship God
 
+# Setup
+- Either download a bin or compile the code from the source
+    - How to compile?
+        - ```make && ./bible_cli/Binaries/bible_cli```
+- Launch ```ch``` bash file with args to create bible.conf file with ***language*** and ***translation*** params.
+Example of usage: ```./ch en kjv```.
+- Hooray. The file was created.
+- Make sure ```languages.lconf``` is not empty/deleted. Otherwise the program won't launch. Also make sure you specified right translation.
+- Turn off **the debug mode** if you don't need it.
+    - Find ```#define DEBUG_MODE 1``` in ```Bible-CLI-lite/bible_cli/Headers/tool.h``` and change the value to ```0```.
+
 # FAQ
 ### — So, how can I make it?
-**Answer:** Simple as that, mate. Use ```make``` to build the project and then run the executable.
 ### — Well, how can I download new translations for the Bible?
-**Answer:** It's easy as well.
-- Download any text file with the plain text of the Bible (NO JSON/XML/ET CETERA FORMATS).
+**Answer:** You can download texts only in the OpenBible format.
+- Download a text file from OpenBible.
 - Rename it considering the file format ```<LANGUAGE>_<TRANSLATION>.bbl```.
 - Move this file into ```Bible-CLI-lite/Translations/```
-- Change ```Bible-CLI-lite/bible.conf``` by replacing the value of the translation and the language **OR** do the same using ```Bible-CLI-lite/ch``` (which is a bash script): ```./ch <language> <translation>``` (the file also **must** be in the *.bbl* format)
+- Change ```Bible-CLI-lite/bible.conf``` by using ```ch``` utility like above.
 ### — What if I've got a non-OpenBible format?
-**Answer:** you *should* write your own parser. How to do that? Go right to ```Bible-CLI-lite/bible_cli/Sources/``` and recreate a file named ```parser.c``` from the scratch. You have to use the same function names that is declared in the ```parser.h``` file. Now it's fine. You can use the program with your format.
+**Answer:** you *should* write your own parser. How to do that? Go right to ```Bible-CLI-lite/bible_cli/Sources/``` and recreate a file named ```parser.c``` from the scratch. You have to use the same function names and structs that is declared in the ```parser.h``` file. Now it's fine. You can use the program with your own format.
 
 # Licence?
 There is no licence, and all that rubbish, just because the Bible doesn't need it. You can modify the code however you can and however you want.
