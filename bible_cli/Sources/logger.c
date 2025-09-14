@@ -30,7 +30,7 @@ int makeErrorAndFreeString(const char *errorDesc, size_t pointersCount, ...) {
     else
         printf("Error: %s\n", errorDesc);
     va_list pointers;
-    va_start(pointers, errorDesc);
+    va_start(pointers, pointersCount);
     for (size_t i = 0; i < pointersCount; i++) {
         char *ptr = va_arg(pointers, char *);
         free(ptr);

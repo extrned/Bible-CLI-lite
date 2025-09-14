@@ -6,3 +6,4 @@
 #include "config_manager.h"
 #include "lang_parser.h"
 #include "logger.h"
+#include "cli.h"

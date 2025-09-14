@@ -1,6 +1,7 @@
 #include "tool.h"
 
 int main(void) {
+    int LAUNCHED = 1;
     ConfigParams pars = {0};
     LanguagePack pack = {0};
     char mainPath[PATH_SIZE], packPath[PATH_SIZE];
@@ -22,6 +23,10 @@ int main(void) {
 makeLog("ConfigParams: language is '%s' and translation is '%s'.", pars.language, pars.translation);
         makeLog("Selected language pack is '%s'.", pack.langCode);
     }
+
+    cliInit();
+    cliLoop(&LAUNCHED);
+    
     freeLanguagePack(&pack);
     if (DEBUG_MODE) makeLog("Language Pack memory was freed.");
     return 0;

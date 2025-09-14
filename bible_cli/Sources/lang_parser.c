@@ -25,52 +25,58 @@ int processLanguagePack(LanguagePack *lp, const char *lpPath) {
         return makeError("Failed to allocate memory for line.");
     }
 
-    char *lang = (char *)malloc(MAX_LANG_LENGTH * sizeof(char));
-    if (lang == NULL) {
-        makeErrorAndFreeString("Failed to allocate memory for lang.", 1, line);
-    }
-    lang[0] = '\0';
     FILE *f = fopen(lpPath, "r");
     if (f == NULL) {
-        return makeErrorAndFreeString("Failed to open a language pack", 2, line, lang);
+        return makeErrorAndFreeString("Failed to open a language pack", 1, line);
     }
-    while (fgets(line, MAX_LINE_LENGTH, f) != NULL) {
+
+    char *lang;
+    
+    int langFound = 0;
+    while (fgets(line, MAX_LINE_LENGTH, f) != NULL && langFound != 1) {
         line[strcspn(line, "\n")] = '\0';
-        if (strlen(line) == 0 || line[0] == '*') continue;
+        if (strlen(line) == 0 || line[0] == '*') continue; // * for comments
         char *oBracket = strchr(line, '[');
-        if (oBracket != NULL && strcmp(lang, lp->langCode) != 0) {
+        if (oBracket != NULL) {
             char *cBracket = strchr(oBracket + 1, ']');
             if (cBracket != NULL) {
-                if (DEBUG_MODE)
-                    makeLog("LanguagePack: Running through %s", line);
-                int len = cBracket - (oBracket + 1);
+                size_t len = cBracket - (oBracket + 1);
                 if (len >= MAX_LANG_LENGTH) {
                     fclose(f);
-                    return makeErrorAndFreeString("Language code is too long.", 2, line, lang);
+                    return makeErrorAndFreeString("Language code is too long.", 1, line);
                 }
-                char *trimmed = trim(oBracket + 1);
-                size_t trimmedLen = strlen(trimmed);
-                if (trimmedLen >= MAX_LANG_LENGTH) {
+                lang = (char *)malloc(len + 1);
+                if (lang == NULL) {
                     fclose(f);
-                    return makeErrorAndFreeString("Trimmed language code is too long.", 2, line, lang);
+                    return makeErrorAndFreeString("Lang can't be allocated.", 1, line);
                 }
-                if (trimmedLen > len) trimmedLen = len;
-                strncpy(lang, trimmed, len);
+                strncpy(lang, oBracket + 1, len);
                 lang[len] = '\0';
                 if (DEBUG_MODE)
-                    makeLog("Now lang is %s", lang);
+                    makeLog("LanguagePack: Running through '%s'", lang);
+                char *trimmed = trim(lang);
+                if (trimmed == NULL) {
+                    fclose(f);
+                    return makeErrorAndFreeString("Trimmed text can't be allocated.", 2, line, lang);
+                }
+                if (strlen(trimmed) == 0) {
+                    free(lang);
+                    continue;
+                }
+                strcpy(lang, trimmed);
+                if (strcmp(lang, lp->langCode) == 0) langFound = 1;
             }
         }
     }
     free(line);
     
-    if (strcmp(lang, lp->langCode) != 0) {
+    if (!langFound) {
         fclose(f);
         makeWarning("'%s' isn't supported.", lp->langCode);
-        return makeErrorAndFreeString("The language pack does not contain your language. Critical error.", 1, lang);
+        return makeError("The language pack does not contain your language. Critical error.");
     }
-    free(lang);
     fclose(f);
+    free(lang);
     return 1;
 }
 
