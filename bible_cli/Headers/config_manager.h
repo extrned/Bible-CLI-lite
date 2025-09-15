@@ -1,17 +1,17 @@
 #pragma once
 
-#include <stdio.h>
-#include <string.h>
 #include "logger.h"
 #include "utils.h"
+#include <stdio.h>
+#include <string.h>
 
 #ifdef __linux__
-    #include <unistd.h>
+#include <unistd.h>
 #endif
 
 typedef struct {
-    char language[50];
-    char translation[50];
+  char language[50];
+  char translation[50];
 } ConfigParams;
 
 char *trim(char *str);

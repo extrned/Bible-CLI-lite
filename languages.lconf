@@ -4,7 +4,7 @@
 
 * Config Parser ignores: asterisks ***, empty lines, spaces in language codes
 [ en ]
-main-title-section The Bible CLI
+main-title-section The Bible CLI for the most avid Bible readers
 main-button-start Start from the beginning
 main-button-continue Continue reading
 main-button-settings Open Settings
@@ -14,7 +14,7 @@ reader-title-chapter Chapter
 reader-title-verse Verse
 
 [ ru ]
-main-title-section Консольная Библия
+main-title-section Консольная Библия для заядлых читателей
 main-button-start Читать с начала
 main-button-continue Продолжить чтение
 main-button-settings Открыть Настройки
