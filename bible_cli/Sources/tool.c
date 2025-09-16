@@ -11,11 +11,11 @@ int main(void) {
     exit(1);
   }
 
-  strcpy(configPath, mainPath);
-  strcpy(packPath, mainPath);
+  strncpy(configPath, mainPath, PATH_SIZE);
+  strncpy(packPath, mainPath, PATH_SIZE);
 
-  strcat(configPath, "/bible.conf");
-  strcat(packPath, "/languages.lconf");
+  strncat(configPath, "/bible.conf", PATH_SIZE);
+  strncat(packPath, "/languages.lconf", PATH_SIZE);
 
   if (initConfig(&pars, configPath) == 0)
     exit(1);
