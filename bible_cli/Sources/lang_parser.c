@@ -14,145 +14,79 @@ int initLanguagePack(LanguagePack *lp, char *langName) {
 }
 
 int processLanguagePack(LanguagePack *lp, const char *lpPath) {
-  if (lp == NULL) {
+  if (!lp)
     return makeError("LanguagePack pointer is NULL.");
-  }
-  if (strlen(lpPath) == 0) {
+  if (!lpPath || !*lpPath)
     return makeError("LanguagePack path is empty");
-  }
-  char *line = (char *)malloc(MAX_LINE_LENGTH * sizeof(char));
-  if (line == NULL) {
-    return makeError("Failed to allocate memory for line.");
-  }
-  char *lang = (char *)malloc(MAX_LANG_LENGTH * sizeof(char));
-  if (lang == NULL) {
-    return makeError("Failed to allocate memory for lang.");
-  }
 
   FILE *f = fopen(lpPath, "r");
-  if (f == NULL) {
-    return makeErrorAndFreeString("Failed to open a language pack", 1, line);
-  }
+  if (!f)
+    return makeError("Failed to open a language pack");
 
+  char line[MAX_LINE_LENGTH];
+  char header[MAX_LANG_LENGTH];
   int langFound = 0;
-  while (fgets(line, MAX_LINE_LENGTH, f) != NULL) {
+
+  while (fgets(line, sizeof line, f)) {
     line[strcspn(line, "\n")] = '\0';
-    if (strlen(line) == 0 || line[0] == '*')
-      continue; // * for comments
-    char *oBracket = strchr(line, '[');
-    if (oBracket != NULL) {
+    if (line[0] == '\0' || line[0] == '*')
+      continue;
+
+    if (sscanf(line, " [ %49[^] \t] ] ", header) == 1) {
       if (langFound)
         break;
-      char *cBracket = strchr(oBracket + 1, ']');
-      if (cBracket != NULL) {
-        int len = cBracket - (oBracket + 1);
-        if (len >= MAX_LANG_LENGTH) {
-          fclose(f);
-          return makeErrorAndFreeString("Language code is too long.", 1, line);
-        }
-        strncpy(lang, oBracket + 1, len);
-        lang[len] = '\0';
-
-        char *trimmed = trim(lang);
-        size_t trimmedLen = strlen(trimmed);
-        if (trimmedLen >= MAX_LANG_LENGTH) {
-          fclose(f);
-          return makeErrorAndFreeString("Trimmed Language code is too long.", 1,
-                                        line);
-        }
-        strcpy(lang, trimmed);
+      char *trimmed = trim(header);
+      if (strcmp(trimmed, lp->langCode) == 0) {
+        langFound = 1;
         if (DEBUG_MODE)
-          makeLog("LanguagePack: Running through '%s'", lang);
-        langFound = (strcmp(lang, lp->langCode) == 0);
-        continue;
+          makeLog("LanguagePack: using section '%s'", trimmed);
       }
+      continue;
     }
 
     if (langFound) {
-      char *key = trim(line);
-      char *space = strchr(key, ' ');
-      if (space == NULL)
-        continue;
-      *space = '\0';
-      char *value = trim(space + 1);
-      if (strlen(value) == 0)
+      char key[128];
+      char value[MAX_LINE_LENGTH];
+      if (sscanf(line, " %127s %[^\n]", key, value) != 2)
         continue;
 
-      if (strcmp(key, "main-title-section") == 0) {
-        lp->mainTitleSection = strdup(value);
-        if (lp->mainTitleSection == NULL) {
+      char **dest = NULL;
+      if (strcmp(key, "main-title-section") == 0)
+        dest = &lp->mainTitleSection;
+      else if (strcmp(key, "main-button-start") == 0)
+        dest = &lp->mainButtonStart;
+      else if (strcmp(key, "main-button-continue") == 0)
+        dest = &lp->mainButtonContinue;
+      else if (strcmp(key, "main-button-settings") == 0)
+        dest = &lp->mainButtonSettings;
+      else if (strcmp(key, "main-button-exit") == 0)
+        dest = &lp->mainButtonExit;
+      else if (strcmp(key, "reader-title-book") == 0)
+        dest = &lp->readerTitleBook;
+      else if (strcmp(key, "reader-title-chapter") == 0)
+        dest = &lp->readerTitleChapter;
+      else if (strcmp(key, "reader-title-verse") == 0)
+        dest = &lp->readerTitleVerse;
+
+      if (dest) {
+        *dest = strdup(trim(value));
+        if (!*dest) {
           fclose(f);
-          return makeErrorAndFreeString(
-              "Failed to allocate memory for mainTitleSection.", 2, line, lang);
+          return makeError("Failed to allocate memory for a field.");
         }
-      } else if (strcmp(key, "main-button-start") == 0) {
-        lp->mainButtonStart = strdup(value);
-        if (lp->mainButtonStart == NULL) {
-          fclose(f);
-          return makeErrorAndFreeString(
-              "Failed to allocate memory for mainButtonStart.", 2, line, lang);
-        }
-      } else if (strcmp(key, "main-button-continue") == 0) {
-        lp->mainButtonContinue = strdup(value);
-        if (lp->mainButtonContinue == NULL) {
-          fclose(f);
-          return makeErrorAndFreeString(
-              "Failed to allocate memory for mainButtonContinue.", 2, line,
-              lang);
-        }
-      } else if (strcmp(key, "main-button-settings") == 0) {
-        lp->mainButtonSettings = strdup(value);
-        if (lp->mainButtonSettings == NULL) {
-          fclose(f);
-          return makeErrorAndFreeString(
-              "Failed to allocate memory for mainButtonSettings.", 2, line,
-              lang);
-        }
-      } else if (strcmp(key, "main-button-exit") == 0) {
-        lp->mainButtonExit = strdup(value);
-        if (lp->mainButtonExit == NULL) {
-          fclose(f);
-          return makeErrorAndFreeString(
-              "Failed to allocate memory for mainButtonExit.", 2, line, lang);
-        }
-      } else if (strcmp(key, "reader-title-book") == 0) {
-        lp->readerTitleBook = strdup(value);
-        if (lp->readerTitleBook == NULL) {
-          fclose(f);
-          return makeErrorAndFreeString(
-              "Failed to allocate memory for readerTitleBook.", 2, line, lang);
-        }
-      } else if (strcmp(key, "reader-title-chapter") == 0) {
-        lp->readerTitleChapter = strdup(value);
-        if (lp->readerTitleChapter == NULL) {
-          fclose(f);
-          return makeErrorAndFreeString(
-              "Failed to allocate memory for readerTitleChapter.", 2, line,
-              lang);
-        }
-      } else if (strcmp(key, "reader-title-verse") == 0) {
-        lp->readerTitleVerse = strdup(value);
-        if (lp->readerTitleVerse == NULL) {
-          fclose(f);
-          return makeErrorAndFreeString(
-              "Failed to allocate memory for readerTitleVerse.", 2, line, lang);
-        }
-      }
-      if (DEBUG_MODE) {
-        makeLog("Parsed key: %s, value: %s", key, value);
+        if (DEBUG_MODE)
+          makeLog("Parsed key: %s, value: %s", key, value);
       }
     }
   }
-  free(line);
-  free(lang);
 
   fclose(f);
 
   if (!langFound) {
-    makeWarning("'%s' isn't supported", lp->langCode);
-    return makeError(
-        "The language pack does not contain your language. Critical error.");
+    makeWarning("'%s' not found in language pack", lp->langCode);
+    return makeError("The language pack does not contain your language.");
   }
+
   return 1;
 }
 

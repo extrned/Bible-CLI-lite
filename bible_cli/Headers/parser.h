@@ -23,8 +23,8 @@ typedef struct {
 } Bible;
 
 void initBible(Bible *bible);
-void addVerse(Bible *bible, const char *bookName, int chapter, int verseNumber,
-              const char *verseText);
+void addVerse(Bible *bible, char *bookName, int chapter, int verseNumber,
+              char *verseText);
 int parseBibleFile(const char *fileName, Bible *bible);
 const char *getVerseText(Bible *bible, const char *book, int chapter,
                          int verseNumber);
