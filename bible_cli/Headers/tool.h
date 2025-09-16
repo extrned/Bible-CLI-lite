@@ -1,6 +1,6 @@
 #pragma once
 
-#define PATH_SIZE 512
+#define PATH_SIZE 256
 #define DEBUG_MODE 1 // FOR LOGGING. TURN OFF IF IT ISN'T NEEDED
 
 #include "cli.h"
